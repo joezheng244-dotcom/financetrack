@@ -1,5 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
-  font-family: system-ui, sans-serif;
+  font-family: theme('fontFamily.sans');
   background: #f7fafc;
   color: #0f172a;
   margin: 0;
