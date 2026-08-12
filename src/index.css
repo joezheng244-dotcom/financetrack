@@ -19,22 +19,9 @@ body {
 
 .app {
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
-  text-align: center;
+  background: #f8fafc;
 }
 
-header h1 {
-  margin: 0 0 1rem;
-  font-size: clamp(2rem, 4vw, 3.5rem);
-}
-
-main p {
-  max-width: 40rem;
-  margin: 0 auto;
-  line-height: 1.75;
-  color: #334155;
+* {
+  box-sizing: border-box;
 }

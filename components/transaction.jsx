@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { db } from "../src/firebase";
 
 export default function Transaction(){
 
@@ -14,7 +16,7 @@ export default function Transaction(){
     }
 
     return (
-        <form onSubmit={handleSubmit} className="mx-auto w-full max-w-xl rounded-3xl border border-slate-200 bg-white pt-6 px-6 pb-4 shadow-[0_30px_70px_-40px_rgba(15,23,42,0.35)] transition duration-200 hover:-translate-y-1 hover:shadow-2xl">
+        <form onSubmit={handleSubmit} className="w-full rounded-3xl border border-slate-200 bg-[#F8F7F4] pt-6 px-6 pb-4 shadow-[0_30px_70px_-40px_rgba(15,23,42,0.12)] transition duration-200 hover:-translate-y-1 hover:shadow-2xl">
             <div className="mb-6 space-y-6">
                 <h2 className="text-2xl font-semibold text-slate-900">Transaction</h2>
                 <label>
