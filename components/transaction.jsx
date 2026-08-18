@@ -1,18 +1,36 @@
 import { useState } from "react";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
-import { db } from "../src/firebase";
+import { db, auth } from "../src/firebase";
 
-export default function Transaction(){
-
+export default function Transaction() {
     const [amount, setAmount] = useState('');
     const [category, setCategory] = useState('');
     const [type, setType] = useState('');
-    const [description, setDescription] = useState('');
-    const [date, setDate] = useState('');
 
-    function handleSubmit(e){
+    async function handleSubmit(e) {
         e.preventDefault();
 
+        if (!amount || !category || !type) {
+            alert('Please fill in all required fields.');
+            return;
+        }
+
+        try {
+            await addDoc(collection(db, 'transactions'), {
+                amount: parseFloat(amount),
+                category,
+                type,
+                createdAt: serverTimestamp(),
+                userId: auth.currentUser.uid,
+            });
+
+            setAmount('');
+            setCategory('');
+            setType('');
+        } catch (error) {
+            console.error('Error adding transaction:', error);
+            alert('Something went wrong while saving the transaction.');
+        }
     }
 
     return (
@@ -25,9 +43,10 @@ export default function Transaction(){
                         value={type}
                         onChange={(e) => setType(e.target.value)}
                         className="mt-1 block w-full rounded-md border border-slate-300 bg-white py-2 px-3 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    >   <option value="">-- Please Choose One --</option> 
-                        <option value="Income">Income</option>
-                        <option value="Expense">Expense</option>
+                    >
+                        <option value="">-- Please Choose One --</option>
+                        <option value="income">Income</option>
+                        <option value="expense">Expense</option>
                     </select>
                 </label>
 
@@ -38,15 +57,15 @@ export default function Transaction(){
                         onChange={(e) => setCategory(e.target.value)}
                         className="mt-1 block w-full rounded-md border border-slate-300 bg-white py-2 px-3 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
-                        <option value="">-- Please Choose One --</option> 
+                        <option value="">-- Please Choose One --</option>
                         <option value="Credit Card">Credit Card</option>
                         <option value="Cash">Cash</option>
                         <option value="UberEats">UberEats</option>
                         <option value="FrontEats">FrontEats</option>
                         <option value="DoorDash">DoorDash</option>
                         <option value="GrubHub">GrubHub</option>
-                        <option value="Utilities (Electricity, Water, Gas)">Utilities (Electricity, Water, Gas)</option>
-                        <option value="Imports (A5 Wagyu, Salmon, etc.)">Imports (A5 Wagyu, Salmon, etc.)</option>
+                        <option value="Utilities">Utilities (Electricity, Water, Gas)</option>
+                        <option value="Imports">Imports (A5 Wagyu, Salmon, etc.)</option>
                     </select>
                 </label>
 
@@ -65,6 +84,6 @@ export default function Transaction(){
                 </button>
             </div>
         </form>
-    )
+    );
 }
 
